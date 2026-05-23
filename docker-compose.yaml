@@ -1,0 +1,135 @@
+x-airflow-common:
+  &airflow-common
+  build: .
+  image: ${AIRFLOW_IMAGE_NAME}
+  env_file: .env
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/files:/opt/airflow/files
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/config:/opt/airflow/config
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./kafka:/opt/airflow/kafka
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    &airflow-common-depends-on
+    postgres:
+      condition: service_healthy
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    env_file: .env
+    ports:
+      - "5436:5432"
+    volumes:
+      - pgdata_airflow:/var/lib/postgresql/data
+      - ./potgres/pg_files:/files
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-airflow} -d ${POSTGRES_DB:-airflow}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lake
+    restart: always
+
+  postgres_db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${MYDB_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${MYDB_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${MYDB_POSTGRES_DB}
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata_mydb:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${MYDB_POSTGRES_USER} -d ${MYDB_POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lake
+    restart: always
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    container_name: airflow-init
+    command: >
+      -c "
+      airflow db migrate &&
+      airflow users create --username ${AIRFLOW_WWM_USER_USERNAME:-airflow} --password ${AIRFLOW_WWM_USER_PASSWORD:-airflow} --firstname Allahverdi --lastname Hajiyev --role Admin --email admin@local
+      "
+    networks:
+      - lake
+    user: "0:0"
+    volumes:
+      - ./airflow:/sources
+    restart: "no"
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    container_name: airflow-webserver
+    networks:
+      - lake
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    container_name: airflow-scheduler
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    networks:
+      - lake
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    networks:
+      - lake
+    restart: always
+
+volumes:
+  pgdata_airflow:
+  pgdata_mydb:
+  pgadmin_data:
+
+networks:
+  lake:
+    driver: bridge

@@ -1,0 +1,4 @@
+station_id,date,fuel_type,liters,unit_price,total_amount,operator
+ST002,2026-05-23,AI95,2332.38,1.85,4314.9,op_05
+ST002,2026-05-23,AI98,987.31,2.2,2172.08,op_01
+ST002,2026-05-23,DIESEL,1518.99,2.1,3189.88,op_03

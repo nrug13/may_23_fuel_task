@@ -1,0 +1,4 @@
+docker compose restart airflow-webserver
+sudo chown -R 50000:0 ./airflow/logs
+docker compose logs -f airflow-webserver
+sudo chown -R nurgun:nurgun /home/nurgun/Documents/fuelco-pipeline/airflow/dags/

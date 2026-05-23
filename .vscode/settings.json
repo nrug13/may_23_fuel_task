@@ -1,0 +1,24 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5435,
+            "driver": "PostgreSQL",
+            "database": "mydb",
+            "username": "nurgun",
+            "name": "mydb1"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5436,
+            "driver": "PostgreSQL",
+            "name": "my_airflow_db",
+            "database": "airflow",
+            "username": "airflow"
+        }
+    ]
+}
