@@ -1,0 +1,40 @@
+[2026-05-26T02:46:13.635+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-05-26T02:46:13.663+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: fuel_daily_pipeline.transform_to_mart manual__2026-05-26T02:46:10.782891+00:00 [queued]>
+[2026-05-26T02:46:13.681+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: fuel_daily_pipeline.transform_to_mart manual__2026-05-26T02:46:10.782891+00:00 [queued]>
+[2026-05-26T02:46:13.682+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 3
+[2026-05-26T02:46:13.700+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): transform_to_mart> on 2026-05-26 02:46:10.782891+00:00
+[2026-05-26T02:46:13.715+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'fuel_daily_pipeline', 'transform_to_mart', 'manual__2026-05-26T02:46:10.782891+00:00', '--job-id', '10', '--raw', '--subdir', 'DAGS_FOLDER/dags/fuel_daily_pipeline.py', '--cfg-path', '/tmp/tmps9y556vi']
+[2026-05-26T02:46:13.718+0000] {standard_task_runner.py:105} INFO - Job 10: Subtask transform_to_mart
+[2026-05-26T02:46:13.721+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=262) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-05-26T02:46:13.722+0000] {standard_task_runner.py:72} INFO - Started process 263 to run task
+[2026-05-26T02:46:13.785+0000] {task_command.py:467} INFO - Running <TaskInstance: fuel_daily_pipeline.transform_to_mart manual__2026-05-26T02:46:10.782891+00:00 [running]> on host 1948ac3c9957
+[2026-05-26T02:46:13.905+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='fuel_daily_pipeline' AIRFLOW_CTX_TASK_ID='transform_to_mart' AIRFLOW_CTX_EXECUTION_DATE='2026-05-26T02:46:10.782891+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-05-26T02:46:10.782891+00:00'
+[2026-05-26T02:46:13.906+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-05-26T02:46:13.937+0000] {base.py:84} INFO - Retrieving connection 'fuelco_postgres'
+[2026-05-26T02:46:13.947+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO mart.daily_station_summary
+            (station_id, sale_date, total_liters, total_revenue,
+             top_fuel, transaction_cnt, updated_at)
+        SELECT station_id, sale_date,
+               SUM(liters), SUM(total_amount),
+               (SELECT fuel_type FROM raw.fuel_sales r2
+                WHERE r2.station_id = r.station_id
+                  AND r2.sale_date  = r.sale_date
+                ORDER BY liters DESC LIMIT 1),
+               COUNT(*), NOW()
+        FROM raw.fuel_sales r
+        WHERE sale_date = %(d)s
+        GROUP BY station_id, sale_date
+        ON CONFLICT (station_id, sale_date) DO UPDATE SET
+            total_liters  = EXCLUDED.total_liters,
+            total_revenue = EXCLUDED.total_revenue,
+            updated_at    = NOW()
+    , parameters: {'d': '2026-05-26'}
+[2026-05-26T02:46:13.957+0000] {sql.py:520} INFO - Rows affected: 5
+[2026-05-26T02:46:13.958+0000] {fuel_daily_pipeline.py:69} INFO - Mart guncellendi: 2026-05-26
+[2026-05-26T02:46:13.959+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-05-26T02:46:13.977+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-05-26T02:46:13.977+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=fuel_daily_pipeline, task_id=transform_to_mart, run_id=manual__2026-05-26T02:46:10.782891+00:00, execution_date=20260526T024610, start_date=20260526T024613, end_date=20260526T024613
+[2026-05-26T02:46:14.056+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-05-26T02:46:14.090+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-05-26T02:46:14.092+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

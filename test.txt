@@ -2,3 +2,9 @@ docker compose restart airflow-webserver
 sudo chown -R 50000:0 ./airflow/logs
 docker compose logs -f airflow-webserver
 sudo chown -R nurgun:nurgun /home/nurgun/Documents/fuelco-pipeline/airflow/dags/
+docker exec -i postgres-db psql -U nurgun -d mydb < scripts/init_db.sql
+
+
+
+docker exec airflow-scheduler ls /opt/airflow/data/incoming/ 2>/dev/null || echo "PATH TAPILMADI"
+

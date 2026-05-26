@@ -1,0 +1,5 @@
+rm data/incoming/ST003_2026-05-26.csv
+ls data/incoming/
+
+python scripts/generate_csv.py
+SELECT COUNT(*) FROM raw.fuel_sales WHERE sale_date = '2026-05-26';

@@ -1,0 +1,140 @@
+[2026-05-26T02:46:12.472+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-05-26T02:46:12.503+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: fuel_daily_pipeline.load_raw manual__2026-05-26T02:46:10.782891+00:00 [queued]>
+[2026-05-26T02:46:12.519+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: fuel_daily_pipeline.load_raw manual__2026-05-26T02:46:10.782891+00:00 [queued]>
+[2026-05-26T02:46:12.520+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 3
+[2026-05-26T02:46:12.536+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): load_raw> on 2026-05-26 02:46:10.782891+00:00
+[2026-05-26T02:46:12.550+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'fuel_daily_pipeline', 'load_raw', 'manual__2026-05-26T02:46:10.782891+00:00', '--job-id', '9', '--raw', '--subdir', 'DAGS_FOLDER/dags/fuel_daily_pipeline.py', '--cfg-path', '/tmp/tmp_19d42h7']
+[2026-05-26T02:46:12.553+0000] {standard_task_runner.py:105} INFO - Job 9: Subtask load_raw
+[2026-05-26T02:46:12.557+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=259) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-05-26T02:46:12.558+0000] {standard_task_runner.py:72} INFO - Started process 260 to run task
+[2026-05-26T02:46:12.621+0000] {task_command.py:467} INFO - Running <TaskInstance: fuel_daily_pipeline.load_raw manual__2026-05-26T02:46:10.782891+00:00 [running]> on host 1948ac3c9957
+[2026-05-26T02:46:12.729+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='fuel_daily_pipeline' AIRFLOW_CTX_TASK_ID='load_raw' AIRFLOW_CTX_EXECUTION_DATE='2026-05-26T02:46:10.782891+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-05-26T02:46:10.782891+00:00'
+[2026-05-26T02:46:12.730+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-05-26T02:46:12.760+0000] {base.py:84} INFO - Retrieving connection 'fuelco_postgres'
+[2026-05-26T02:46:12.766+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST001', '2026-05-26', 'AI95', '1761.42', '1.85', '3258.63', 'op_01', 'ST001_2026-05-26.csv')
+[2026-05-26T02:46:12.769+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.778+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST001', '2026-05-26', 'AI98', '984.55', '2.2', '2166.01', 'op_03', 'ST001_2026-05-26.csv')
+[2026-05-26T02:46:12.780+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.791+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST001', '2026-05-26', 'DIESEL', '569.27', '2.1', '1195.47', 'op_02', 'ST001_2026-05-26.csv')
+[2026-05-26T02:46:12.793+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.802+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST002', '2026-05-26', 'AI95', '1677.22', '1.85', '3102.86', 'op_05', 'ST002_2026-05-26.csv')
+[2026-05-26T02:46:12.804+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.813+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST002', '2026-05-26', 'AI98', '501.88', '2.2', '1104.14', 'op_03', 'ST002_2026-05-26.csv')
+[2026-05-26T02:46:12.815+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.823+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST002', '2026-05-26', 'DIESEL', '1736.54', '2.1', '3646.73', 'op_03', 'ST002_2026-05-26.csv')
+[2026-05-26T02:46:12.824+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.833+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST003', '2026-05-26', 'AI95', '2439.53', '1.85', '4513.13', 'op_04', 'ST003_2026-05-26.csv')
+[2026-05-26T02:46:12.835+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.844+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST003', '2026-05-26', 'AI98', '2368.04', '2.2', '5209.69', 'op_03', 'ST003_2026-05-26.csv')
+[2026-05-26T02:46:12.846+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.857+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST003', '2026-05-26', 'DIESEL', '1068.26', '2.1', '2243.35', 'op_03', 'ST003_2026-05-26.csv')
+[2026-05-26T02:46:12.859+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.868+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST004', '2026-05-26', 'AI95', '730.98', '1.85', '1352.31', 'op_03', 'ST004_2026-05-26.csv')
+[2026-05-26T02:46:12.870+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.880+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST004', '2026-05-26', 'AI98', '1022.38', '2.2', '2249.24', 'op_02', 'ST004_2026-05-26.csv')
+[2026-05-26T02:46:12.882+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.893+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST004', '2026-05-26', 'DIESEL', '2576.48', '2.1', '5410.61', 'op_03', 'ST004_2026-05-26.csv')
+[2026-05-26T02:46:12.895+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.907+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST005', '2026-05-26', 'AI95', '2097.94', '1.85', '3881.19', 'op_03', 'ST005_2026-05-26.csv')
+[2026-05-26T02:46:12.909+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.922+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST005', '2026-05-26', 'AI98', '2618.68', '2.2', '5761.1', 'op_04', 'ST005_2026-05-26.csv')
+[2026-05-26T02:46:12.925+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.936+0000] {sql.py:511} INFO - Running statement: 
+        INSERT INTO raw.fuel_sales
+            (station_id, sale_date, fuel_type, liters,
+             unit_price, total_amount, operator, source_file)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (station_id, sale_date, fuel_type) DO NOTHING
+    , parameters: ('ST005', '2026-05-26', 'DIESEL', '1189.12', '2.1', '2497.15', 'op_02', 'ST005_2026-05-26.csv')
+[2026-05-26T02:46:12.938+0000] {sql.py:520} INFO - Rows affected: 1
+[2026-05-26T02:46:12.940+0000] {fuel_daily_pipeline.py:45} INFO - Yuklendi: 15 setir
+[2026-05-26T02:46:12.940+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-05-26T02:46:12.959+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-05-26T02:46:12.959+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=fuel_daily_pipeline, task_id=load_raw, run_id=manual__2026-05-26T02:46:10.782891+00:00, execution_date=20260526T024610, start_date=20260526T024612, end_date=20260526T024612
+[2026-05-26T02:46:13.053+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-05-26T02:46:13.119+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-05-26T02:46:13.131+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

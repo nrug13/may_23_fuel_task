@@ -1,0 +1,4 @@
+docker exec -it postgres-db psql -U nurgun -d mydb
+
+SELECT * FROM mart.daily_station_summary WHERE sale_date = '2026-05-26';
+SELECT COUNT(*) FROM raw.fuel_sales WHERE sale_date = '2026-05-26';
